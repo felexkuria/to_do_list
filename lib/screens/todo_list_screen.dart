@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'add_task_screen.dart';
-
 class ToDoListScreen extends StatefulWidget {
   @override
   _ToDoListScreenState createState() => _ToDoListScreenState();
@@ -67,12 +65,6 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
             );
           }
           return _buildTask(index);
-          // return Container(
-          //   height: 100,
-          //   margin: EdgeInsets.all(10.0),
-          //   width: double.infinity,
-          //   color: Colors.red,
-          // );
         },
       ),
     );
