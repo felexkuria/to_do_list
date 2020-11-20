@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:to_do_list/helpers/database_helper.dart';
 import 'package:to_do_list/models/task_model.dart';
 
 class AddTaskScreen extends StatefulWidget {
   final Task task;
+  final Function updateTaskList;
 
-  AddTaskScreen({this.task});
+  AddTaskScreen({this.task, this.updateTaskList});
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }
@@ -51,8 +53,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       //insert task to DataBase
+      Task task = Task(title: _title, date: _date, priority: _priority);
+      if (widget.task == null) {
+        task.status = 0;
+        DatabaseHelper.instance.insertTask(task);
+      } else {
+        //UPDATE TASK
+        task.id = widget.task.id;
+        task.status = widget.task.status;
+        DatabaseHelper.instance.updateTask(task);
+      }
 
-      //UPDATE TASK
+      widget.updateTaskList();
       Navigator.pop(context);
     }
   }
@@ -79,7 +91,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   height: 20.0,
                 ),
                 Text(
-                  'Add Task',
+                  widget.task == null ? 'Add Task' : 'Update Task',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 40.0,
@@ -167,7 +179,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           width: double.infinity,
                           child: FlatButton(
                             child: Text(
-                              'Add',
+                              widget.task == null ? 'Add' : 'Update',
                               style: TextStyle(
                                   color: Colors.white, fontSize: 20.0),
                             ),

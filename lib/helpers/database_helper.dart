@@ -39,7 +39,7 @@ class DatabaseHelper {
 
   void _createDb(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE $tasksTable($colId INTERGER PRIMARY KEY AUTOINCREMENT,$colTitle TEXT,$colDate TEXT,$colPriority TEXT,$colStatus INTERGER)');
+        'CREATE TABLE $tasksTable($colId INTERGER PRIMARY KEY AUTOICREMENT,$colTitle TEXT,$colDate TEXT,$colPriority TEXT,$colStatus INTERGER)');
   }
 
   Future<List<Map<String, dynamic>>> getTaskMapList() async {
@@ -54,7 +54,14 @@ class DatabaseHelper {
     taskMapList.forEach((taskMap) {
       taskList.add(Task.fromMap(taskMap));
     });
+    taskList.sort((taskA, taskB) => taskA.date.compareTo(taskB.date));
     return taskList;
+  }
+
+  Future<int> insertTask(Task task) async {
+    Database db = await this.db;
+    final int result = await db.insert(tasksTable, task.toMap());
+    return result;
   }
 
   Future<int> updateTask(Task task) async {

@@ -25,6 +25,18 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
     });
   }
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _updateTaskList();
+  // }
+
+  // _updateTaskList() {
+  //   setState(() {
+  //     _taskList = DatabaseHelper.instance.getTaskList();
+  //   });
+  // }
+
   Widget _buildTask(Task task) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.0),
@@ -42,7 +54,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
             subtitle: Text(
               '${_dateFormatter.format(task.date)} * ${task.priority}',
               style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 15.0,
                   decoration: task.status == 0
                       ? TextDecoration.none
                       : TextDecoration.lineThrough),
@@ -54,11 +66,16 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                 _updateTaskList();
               },
               activeColor: Theme.of(context).primaryColor,
-              value: true,
+              value: task.status == 1 ? true : false,
             ),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => AddTaskScreen(task: task)));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AddTaskScreen(
+                      updateTaskList: _updateTaskList(), task: task),
+                ),
+              );
             },
           ),
           Divider()
@@ -74,13 +91,15 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
-          Navigator.pushNamed(context, '/addtask');
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (_) => AddTaskScreen(),
-          //   ),
-          // );
+          // Navigator.pushNamed(context, '/addtask');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddTaskScreen(
+                updateTaskList: _updateTaskList(),
+              ),
+            ),
+          );
         },
         child: Icon(Icons.add),
       ),
@@ -125,7 +144,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                     ),
                   );
                 }
-                return _buildTask(snapshot.data(index - 1));
+                return _buildTask(snapshot.data[index - 1]);
               },
             );
           }),
