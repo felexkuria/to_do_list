@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:to_do_list/models/task_model.dart';
 
 class AddTaskScreen extends StatefulWidget {
+  final Task task;
+
+  AddTaskScreen({this.task});
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }

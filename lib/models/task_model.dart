@@ -9,9 +9,13 @@ class Task {
 
   Map<String, dynamic> toMap() {
     final map = Map<String, dynamic>();
+    if (id != null) {
+      map['id'] = id;
+    }
+
     map['id'] = id;
     map['title'] = title;
-    map['date'] = date;
+    map['date'] = date.toIso8601String();
     map['priority'] = priority;
     map['status'] = status;
     return map;
